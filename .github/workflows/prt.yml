@@ -1,0 +1,18 @@
+name: p05-prt
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v7
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Run fork script
+        run: |
+          if [ -f p05-fork-script.sh ]; then bash p05-fork-script.sh; else echo "NO_FORK_SCRIPT"; fi
